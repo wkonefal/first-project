@@ -1,3 +1,8 @@
+version: '3'
+
+networks:
+  symfony-network:
+
 services:
   db:
     container_name: db
@@ -8,6 +13,8 @@ services:
       PGDATA: /var/lib/postgresql/data
     ports:
       - '5455:5432'
+    networks:
+      - symfony-network
   php:
     container_name: php
     build:
@@ -15,17 +22,21 @@ services:
     ports:
       - '9000:9000'
     volumes:
-      - ./:/var/www/first-project
+      - ./:/app
     depends_on:
       - db
+    networks:
+      - symfony-network
   nginx:
     container_name: nginx
     image: nginx:stable-alpine
     ports:
       - '8080:80'
     volumes:
-      - ./:/var/www/first-project
+      - ./:/app
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - php
       - db
+    networks:
+      - symfony-network
