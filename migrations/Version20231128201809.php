@@ -7,19 +7,15 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20231128201809 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Create tables.';
     }
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE category (id VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, parent VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE pattern (id VARCHAR(255) NOT NULL, code VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE product (id VARCHAR(255) NOT NULL, pattern_id VARCHAR(255) DEFAULT NULL, name VARCHAR(255) NOT NULL, description TEXT DEFAULT NULL, price DOUBLE PRECISION NOT NULL, tax INT NOT NULL, PRIMARY KEY(id))');
@@ -34,16 +30,13 @@ final class Version20231128201809 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE product DROP CONSTRAINT FK_D34A04ADF734A20F');
         $this->addSql('ALTER TABLE product_category DROP CONSTRAINT FK_CDFC73564584665A');
         $this->addSql('ALTER TABLE product_category DROP CONSTRAINT FK_CDFC735612469DE2');
-        /*
         $this->addSql('DROP TABLE category');
         $this->addSql('DROP TABLE pattern');
         $this->addSql('DROP TABLE product');
         $this->addSql('DROP TABLE product_category');
-        */
     }
 }
