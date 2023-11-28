@@ -11,31 +11,30 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Product
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Assert\Uuid]
-    private ?string $id = null;
+    private string $id;
 
     #[ORM\Column(type: 'string', nullable: false)]
-    private ?string $name;
+    private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column]
-    private ?float $price;
+    private ?float $price = null;
 
     #[ORM\Column]
-    private ?int $tax;
+    private ?int $tax = null;
 
     #[ORM\ManyToOne(targetEntity: Pattern::class)]
     private ?Pattern $pattern;
 
 
     /**
-     * @return string |null
+     * @return string
      */
-    public function getId(): ?string
+    public function getId(): string
     {
         return $this->id;
     }

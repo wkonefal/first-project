@@ -4,23 +4,22 @@ namespace App\Entity;
 
 use App\Repository\ProductCategoryRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductCategoryRepository::class)]
 class ProductCategory
 {
     #[ORM\ManyToOne(targetEntity: Product::class)]
-    #[Assert\Unique]
+    #[ORM\Id]
     private Product $product;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'productCategories')]
-    #[Assert\Unique]
+    #[ORM\Id]
     private Category $category;
 
-    public function __construct()
+    public function __construct(Product $product, Category $category)
     {
-        $this->product = new Product();
-        $this->category = new Category();
+        $this->product = $product;
+        $this->category = $category;
     }
 
     /**
@@ -55,7 +54,7 @@ class ProductCategory
      * @param Category $category
      * @return $this
      */
-    public function setCategory(Category $category): static
+    public function setCategory(Category $category): self
     {
         $this->category = $category;
 
