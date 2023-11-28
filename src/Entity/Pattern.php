@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: PatternRepository::class)]
 class Pattern
 {
+    #[ORM\Id]
     #[ORM\Column]
     #[Assert\Uuid]
     private string $id;
