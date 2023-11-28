@@ -6,7 +6,7 @@ networks:
 services:
   db:
     container_name: db
-    image: postgres
+    image: postgres:latest
     restart: always
     environment:
       POSTGRES_PASSWORD: oSEwKtA2^iw%AV
@@ -19,6 +19,8 @@ services:
     container_name: php
     build:
       context: ./docker/php
+    expose:
+      - "9000"
     ports:
       - '9000:9000'
     volumes:
