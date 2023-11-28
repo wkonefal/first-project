@@ -15,28 +15,28 @@ class Category
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Assert\Uuid]
-    private ?int $id = null;
+    private ?string $id = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
     #[ORM\Column(type: 'string', nullable: true)]
     #[ORM\ManyToOne(targetEntity: Category::class)]
-    private ?string $parent;
+    private ?Category $parent = null;
 
     #[ORM\ManyToMany(targetEntity: ProductCategory::class, mappedBy: 'Category')]
     private Collection $productCategories;
 
     public function __construct()
     {
-        $this->parent = new ArrayCollection();
+        $this->parent = new Category();
         $this->productCategories = new ArrayCollection();
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -61,41 +61,11 @@ class Category
     }
 
     /**
-     * @return Collection<int, Product>
+     * @return Category
      */
-    public function getParent(): Collection
+    public function getParent(): Category
     {
         return $this->parent;
-    }
-
-    /**
-     * @param Product $parent
-     * @return $this
-     */
-    public function addParent(Product $parent): static
-    {
-        if (!$this->parent->contains($parent)) {
-            $this->parent->add($parent);
-            $parent->setCategory($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param Product $parent
-     * @return $this
-     */
-    public function removeParent(Product $parent): static
-    {
-        if ($this->parent->removeElement($parent)) {
-            // set the owning side to null (unless already changed)
-            if ($parent->getCategory() === $this) {
-                $parent->setCategory(null);
-            }
-        }
-
-        return $this;
     }
 
     /**
