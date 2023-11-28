@@ -14,28 +14,28 @@ class Product
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Assert\Uuid]
-    private ?int $id = null;
+    private ?string $id = null;
 
     #[ORM\Column(type: 'string', nullable: false)]
-    private ?string $name = null;
+    private ?string $name;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column]
-    private ?float $price = null;
+    private ?float $price;
 
     #[ORM\Column]
-    private ?int $tax = null;
+    private ?int $tax;
 
     #[ORM\ManyToOne(targetEntity: Pattern::class)]
-    private ?string $pattern = null;
+    private ?Pattern $pattern;
 
 
     /**
-     * @return int|null
+     * @return string |null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }

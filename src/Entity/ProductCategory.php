@@ -3,74 +3,50 @@
 namespace App\Entity;
 
 use App\Repository\ProductCategoryRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductCategoryRepository::class)]
 class ProductCategory
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\ManyToOne(targetEntity: Product::class)]
+    #[Assert\Unique]
+    private Product $product;
 
-    #[ORM\ManyToMany(targetEntity: Product::class)]
-    private Collection $product;
-
-    #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'productCategories')]
-    private Collection $category;
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'productCategories')]
+    #[Assert\Unique]
+    private Category $category;
 
     public function __construct()
     {
-        $this->product = new ArrayCollection();
-        $this->category = new ArrayCollection();
+        $this->product = new Product();
+        $this->category = new Category();
     }
 
     /**
-     * @return int|null
+     * @return Product
      */
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return Collection<int, Product>
-     */
-    public function getProduct(): Collection
+    public function getProduct(): Product
     {
         return $this->product;
     }
 
-    /**
-     * @param Product $product
-     * @return $this
-     */
-    public function addProduct(Product $product): static
-    {
-        if (!$this->product->contains($product)) {
-            $this->product->add($product);
-        }
-
-        return $this;
-    }
 
     /**
      * @param Product $product
      * @return $this
      */
-    public function removeProduct(Product $product): static
+    public function setProduct(Product $product): static
     {
-        $this->product->removeElement($product);
+        $this->product = $product;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Category>
+     * @return Category
      */
-    public function getCategory(): Collection
+    public function getCategory(): Category
     {
         return $this->category;
     }
@@ -79,22 +55,9 @@ class ProductCategory
      * @param Category $category
      * @return $this
      */
-    public function addCategory(Category $category): static
+    public function setCategory(Category $category): static
     {
-        if (!$this->category->contains($category)) {
-            $this->category->add($category);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param Category $category
-     * @return $this
-     */
-    public function removeCategory(Category $category): static
-    {
-        $this->category->removeElement($category);
+        $this->category = $category;
 
         return $this;
     }

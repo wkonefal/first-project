@@ -11,18 +11,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Pattern
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Assert\Uuid]
-    private ?int $id = null;
+    private ?string $id = null;
 
     #[ORM\Column(length: 255)]
     private ?string $code = null;
 
+    public function __construct(?string $id) {
+        $this->id = $id;
+    }
+
     /**
-     * @return int|null
+     * @return string |null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
