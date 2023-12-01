@@ -6,16 +6,16 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Assert\Uuid]
-    private ?string $id = null;
+    private string $id;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -29,14 +29,14 @@ class Category
 
     public function __construct()
     {
-        $this->parent = new Category();
+        $this->id = Uuid::v6();
         $this->productCategories = new ArrayCollection();
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getId(): ?string
+    public function getId(): string
     {
         return $this->id;
     }
@@ -61,11 +61,22 @@ class Category
     }
 
     /**
-     * @return Category
+     * @return Category|null
      */
-    public function getParent(): Category
+    public function getParent(): ?Category
     {
         return $this->parent;
+    }
+
+    /**
+     * @param Category $parent
+     * @return $this
+     */
+    public function setParent(Category $parent): static
+    {
+        $this->parent = $parent;
+
+        return $this;
     }
 
     /**

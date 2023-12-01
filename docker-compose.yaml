@@ -9,10 +9,11 @@ services:
     image: postgres:latest
     restart: always
     environment:
-      POSTGRES_PASSWORD: oSEwKtA2^iw%AV
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: oSEwKtA2iwAV
       PGDATA: /var/lib/postgresql/data
     ports:
-      - '5455:5432'
+      - '7432:5432'
     networks:
       - symfony-network
   php:
